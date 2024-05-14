@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { IContractor } from 'types';
 
 const contractor = {
@@ -6,7 +6,9 @@ const contractor = {
     getContractors: async (
       parent: any,
       args: null,
-      { models: { Contractor } }: { models: { Contractor: any } },
+      {
+        models: { Contractor },
+      }: { models: { Contractor: Model<IContractor> } },
       info: any
     ): Promise<IContractor[] | any> => {
       try {
@@ -21,13 +23,15 @@ const contractor = {
     addContractor: async (
       parent: any,
       args: IContractor,
-      { models: { Contractor } }: { models: { Contractor: any } },
+      {
+        models: { Contractor },
+      }: { models: { Contractor: Model<IContractor> } },
       info: any
     ): Promise<Boolean | any> => {
       try {
         await new Contractor({
-          _id: new mongoose.Types.ObjectId(),
           ...args,
+          _id: new mongoose.Types.ObjectId(),
         }).save();
         return true;
       } catch (e) {
